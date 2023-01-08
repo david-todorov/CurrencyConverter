@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.currencyconverter.exchangeRate.ExchangeRateDatabase;
 import com.example.currencyconverter.R;
 
@@ -48,12 +47,12 @@ public class CurrencyListSpinnerAdapter extends BaseAdapter {
 
         }
 
-        TextView names = (TextView) view.findViewById(R.id.text_view_in_view_item);
+        TextView names = view.findViewById(R.id.text_view_in_view_item);
         names.setText(this.currencies.getCurrencies()[i]);
 
         String flagName = "flag_" + this.currencies.getCurrencies()[i].toLowerCase();
         int imageId = this.context.getResources().getIdentifier(flagName,"drawable",this.context.getPackageName());
-        ImageView flag = (ImageView) view.findViewById(R.id.image_view_in_view_item);
+        ImageView flag = view.findViewById(R.id.image_view_in_view_item);
         flag.setImageResource(imageId);
 
         return view;

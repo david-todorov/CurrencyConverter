@@ -1,23 +1,14 @@
 package com.example.currencyconverter.exchangeRate;
 
-
-
-
 import android.app.NotificationChannel;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.app.NotificationManager;
 import android.content.SharedPreferences;
-
 import androidx.core.app.NotificationCompat;
-
 import com.example.currencyconverter.R;
 import com.example.currencyconverter.activities.MainActivity;
-
-
-
 
 public class ExchangeRateUpdateRunnable implements Runnable{
     private Context context;
@@ -40,7 +31,7 @@ public class ExchangeRateUpdateRunnable implements Runnable{
                 sendNotification();
                 SharedPreferences.Editor editor = this.preferences.edit();
                 editor.putBoolean("currencyUpdated", false);
-                editor.commit();
+                editor.apply();
             }
         }
 

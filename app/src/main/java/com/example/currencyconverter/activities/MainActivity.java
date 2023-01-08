@@ -9,11 +9,9 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.currencyconverter.adaptors.CurrencyListSpinnerAdapter;
 import com.example.currencyconverter.exchangeRate.ExchangeRateDatabase;
 import com.example.currencyconverter.exchangeRate.ExchangeRateUpdateRunnable;
@@ -59,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        this.fromSpinner = (Spinner) findViewById(R.id.from_currencies);
-        this.toSpinner = (Spinner) findViewById(R.id.to_currencies);
-        this.calculateButton = (Button) findViewById(R.id.calculate_btn);
-        this.inputValue = (EditText) findViewById(R.id.input_data);
-        this.result = (TextView) findViewById(R.id.result);
+        this.fromSpinner =  findViewById(R.id.from_currencies);
+        this.toSpinner = findViewById(R.id.to_currencies);
+        this.calculateButton = findViewById(R.id.calculate_btn);
+        this.inputValue =  findViewById(R.id.input_data);
+        this.result =  findViewById(R.id.result);
         this.currencyDatabase = new ExchangeRateDatabase();
         this.spinnerListAdapter = new CurrencyListSpinnerAdapter(MainActivity.this ,this.currencyDatabase);
         this.animAlpha  = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);

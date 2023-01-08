@@ -1,19 +1,10 @@
 package com.example.currencyconverter.exchangeRate;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
-import com.example.currencyconverter.R;
-import com.example.currencyconverter.activities.MainActivity;
 import com.google.gson.Gson;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -33,7 +24,7 @@ public class ExchangeRateUpdateWorker extends Worker {
         this.updateCurrencies();
         SharedPreferences.Editor editor = this.preferences.edit();
         editor.putBoolean("currencyUpdated", true);
-        editor.commit();
+        editor.apply();
         return Result.success();
     }
 
@@ -68,7 +59,7 @@ public class ExchangeRateUpdateWorker extends Worker {
 
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 }
