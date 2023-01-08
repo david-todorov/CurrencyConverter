@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/ic_launcher_background">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/image_view_in_view_item"
@@ -16,6 +16,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="#000"
+        android:textColor="@color/app_orange"
+        android:textStyle="normal|bold"
         />
 </LinearLayout>

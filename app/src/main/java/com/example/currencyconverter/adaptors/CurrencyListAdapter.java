@@ -43,7 +43,6 @@ public class CurrencyListAdapter extends BaseAdapter {
 
         if(view == null){
             view = this.inflater.inflate(R.layout.list_currency_view_item, null);
-
         }
 
         TextView names = view.findViewById(R.id.text_view_in_view_item);

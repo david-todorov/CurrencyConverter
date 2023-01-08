@@ -5,4 +5,4 @@
     android:layout_height="match_parent"
     tools:context=".activities.CurrencyListActivity"
     android:id="@+id/currency_list_view"
-    ></ListView>
+    />
