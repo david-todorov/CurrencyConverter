@@ -1,4 +1,4 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.exchangeRate;
 
 public class ExchangeRate {
     private String currencyName;

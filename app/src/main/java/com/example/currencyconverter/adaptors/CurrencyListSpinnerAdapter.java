@@ -1,4 +1,4 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.adaptors;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,17 +8,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CurrencyListAdapter extends BaseAdapter {
+import com.example.currencyconverter.exchangeRate.ExchangeRateDatabase;
+import com.example.currencyconverter.R;
+
+public class CurrencyListSpinnerAdapter extends BaseAdapter {
+
+
     private Context context;
     private ExchangeRateDatabase currencies;
     LayoutInflater inflater;
 
-    public CurrencyListAdapter(Context context, ExchangeRateDatabase currencies){
+    public CurrencyListSpinnerAdapter(Context context, ExchangeRateDatabase currencies){
         this.context = context;
         this.currencies = currencies;
         this.inflater = LayoutInflater.from(context);
     }
-
     @Override
     public int getCount() {
         return this.currencies.getCurrencies().length;
@@ -40,7 +44,7 @@ public class CurrencyListAdapter extends BaseAdapter {
 
 
         if(view == null){
-            view = this.inflater.inflate(R.layout.list_currency_view_item, null);
+            view = this.inflater.inflate(R.layout.list_currency_view_item_spinner, null);
 
         }
 
@@ -49,7 +53,6 @@ public class CurrencyListAdapter extends BaseAdapter {
 
         String flagName = "flag_" + this.currencies.getCurrencies()[i].toLowerCase();
         int imageId = this.context.getResources().getIdentifier(flagName,"drawable",this.context.getPackageName());
-
         ImageView flag = (ImageView) view.findViewById(R.id.image_view_in_view_item);
         flag.setImageResource(imageId);
 

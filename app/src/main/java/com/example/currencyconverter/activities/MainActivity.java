@@ -1,4 +1,4 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.currencyconverter.adaptors.CurrencyListSpinnerAdapter;
+import com.example.currencyconverter.exchangeRate.ExchangeRateDatabase;
+import com.example.currencyconverter.exchangeRate.ExchangeRateUpdateRunnable;
+import com.example.currencyconverter.exchangeRate.ExchangeRateUpdateWorker;
+import com.example.currencyconverter.R;
 import com.google.gson.Gson;
 import org.parceler.Parcels;
 import java.util.concurrent.TimeUnit;
@@ -40,12 +47,16 @@ public class MainActivity extends AppCompatActivity {
     private CurrencyListSpinnerAdapter spinnerListAdapter;
     private Animation animAlpha;
 
+    private SharedPreferences preferences;
+    private final String APP_PREFERENCES = "applicationPreferences";
 
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.preferences = getSharedPreferences(APP_PREFERENCES,MODE_PRIVATE);
+
 
 
         this.fromSpinner = (Spinner) findViewById(R.id.from_currencies);
@@ -75,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         this.schedulePeriodicUpdating();
 
+        Thread thread = new Thread(new ExchangeRateUpdateRunnable(this));
+        thread.start();
+
     }
 
 
@@ -100,17 +114,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
 
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        double inputData = prefs.getFloat("UserData",0.00f);
+
+        double inputData = this.preferences.getFloat("UserData",0.00f);
         this.inputValue.setText(Double.toString(inputData));
 
-        int fromSpinner = prefs.getInt("FromSpinner",0);
+        int fromSpinner = this.preferences.getInt("FromSpinner",0);
         this.fromSpinner.setSelection(fromSpinner);
 
-        int toSpinner = prefs.getInt("ToSpinner",0);
+        int toSpinner = this.preferences.getInt("ToSpinner",0);
         this.toSpinner.setSelection(toSpinner);
 
-        if(prefs.getString("EUR",null) == null){
+        if(this.preferences.getString("EUR",null) == null){
             for (int i = 0; i<this.currencyDatabase.getCurrencies().length;i++){
                 String currencyStr = this.currencyDatabase.getCurrencies()[i];
                 double defaultCurrency = this.currencyDatabase.getExchangeRate(currencyStr);
@@ -121,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i<this.currencyDatabase.getCurrencies().length;i++){
             String currencyStr = this.currencyDatabase.getCurrencies()[i];
-            double newCurrency = Double.parseDouble(prefs.getString(currencyStr,null));
+            double newCurrency = Double.parseDouble(this.preferences.getString(currencyStr,null));
             this.currencyDatabase.setExchangeRate(currencyStr,newCurrency);
         }
         }
@@ -132,8 +146,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences.Editor editor = preferences.edit();
 
         float inputData =  Float.parseFloat(inputValue.getText().toString());
         editor.putFloat("UserData", inputData);

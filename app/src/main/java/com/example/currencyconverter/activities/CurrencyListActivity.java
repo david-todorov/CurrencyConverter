@@ -1,4 +1,4 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.example.currencyconverter.adaptors.CurrencyListAdapter;
+import com.example.currencyconverter.exchangeRate.ExchangeRateDatabase;
+import com.example.currencyconverter.R;
 
 import org.parceler.Parcels;
 

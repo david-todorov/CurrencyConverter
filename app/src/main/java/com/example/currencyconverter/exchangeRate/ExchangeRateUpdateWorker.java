@@ -1,14 +1,19 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.exchangeRate;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.example.currencyconverter.R;
+import com.example.currencyconverter.activities.MainActivity;
 import com.google.gson.Gson;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -16,17 +21,19 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class ExchangeRateUpdateWorker extends Worker {
-
+    private SharedPreferences preferences;
     public ExchangeRateUpdateWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-
+        this.preferences = context.getSharedPreferences("applicationPreferences", Context.MODE_PRIVATE);
     }
 
     @NonNull
     @Override
     public Result doWork() {
         this.updateCurrencies();
-        this.sendNotification();
+        SharedPreferences.Editor editor = this.preferences.edit();
+        editor.putBoolean("currencyUpdated", true);
+        editor.commit();
         return Result.success();
     }
 
@@ -64,26 +71,4 @@ public class ExchangeRateUpdateWorker extends Worker {
 
         }
     }
-
-    void sendNotification() {
-        NotificationManager mNotificationManager =
-                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("1",
-                    "android",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("WorkManger");
-            mNotificationManager.createNotificationChannel(channel);
-        }
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "1")
-                .setSmallIcon(R.mipmap.ic_launcher) // notification icon
-                .setContentTitle("Updated Currencies")
-                .setContentText("Everything fresh...")
-                .setAutoCancel(true); // clear notification after click
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        mBuilder.setContentIntent(pi);
-        mNotificationManager.notify(0, mBuilder.build());
-    }
-
 }

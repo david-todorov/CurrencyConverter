@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CurrencyListActivity"
+    tools:context=".activities.CurrencyListActivity"
     android:id="@+id/currency_list_view"
     ></ListView>

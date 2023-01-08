@@ -1,4 +1,6 @@
-package com.example.currencyconverter;
+package com.example.currencyconverter.exchangeRate;
+
+import com.example.currencyconverter.exchangeRate.ExchangeRate;
 
 import org.parceler.Parcel;
 
